@@ -3,100 +3,167 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vida Sin Dolor PT Services</title>
+  <title>Vida Sin Dolor | Physical Therapy</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --primary-color: #2e7d32;
+      --accent-color: #81c784;
+      --bg-color: #f0fdf4;
+      --text-color: #333;
+    }
+
     * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
       font-family: 'Inter', sans-serif;
     }
+
     body {
-      background: #f9f9f9;
-      color: #333;
+      background-color: var(--bg-color);
+      color: var(--text-color);
       line-height: 1.6;
     }
+
     header {
-      background: #2e7d32;
-      color: #fff;
-      padding: 2rem 1rem;
+      background: var(--primary-color);
+      color: white;
+      padding: 3rem 1rem;
       text-align: center;
+      border-bottom: 5px solid var(--accent-color);
     }
+
     header h1 {
-      font-size: 2.5rem;
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
     }
+
+    header p {
+      font-size: 1.25rem;
+    }
+
+    nav {
+      background: white;
+      padding: 1rem;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    nav a {
+      margin: 0 1rem;
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
     section {
-      padding: 2rem 1rem;
-      max-width: 800px;
+      padding: 4rem 2rem;
+      max-width: 1000px;
       margin: auto;
     }
-    .services, .testimonials, .booking, .contact {
-      margin-bottom: 2rem;
-    }
+
     h2 {
+      color: var(--primary-color);
       margin-bottom: 1rem;
-      color: #2e7d32;
+      font-size: 2rem;
     }
-    ul {
-      list-style: disc;
+
+    .services ul, .testimonials blockquote {
       margin-left: 1.5rem;
     }
+
     .button {
       display: inline-block;
-      padding: 0.75rem 1.5rem;
-      background: #2e7d32;
+      background: var(--primary-color);
       color: white;
-      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 30px;
       text-decoration: none;
-      border-radius: 5px;
-      margin-top: 1rem;
+      font-weight: bold;
+      transition: background 0.3s ease;
     }
-    footer {
-      background: #eee;
-      text-align: center;
+
+    .button:hover {
+      background: #1b5e20;
+    }
+
+    .testimonials blockquote {
+      font-style: italic;
+      background: #fff;
       padding: 1rem;
+      border-left: 5px solid var(--accent-color);
+      margin-bottom: 1rem;
+    }
+
+    .contact a {
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+
+    footer {
+      background: #e8f5e9;
+      text-align: center;
+      padding: 1.5rem;
       font-size: 0.9rem;
+    }
+
+    .hero-img, .section-img {
+      width: 100%;
+      max-height: 400px;
+      object-fit: cover;
+      margin: 2rem 0;
+      border-radius: 10px;
     }
   </style>
 </head>
 <body>
   <header>
     <h1>Vida Sin Dolor</h1>
-    <p>Personalized Physical Therapy, Wherever You Are</p>
+    <p>Modern, Compassionate Physical Therapy in Your Home or Online</p>
+    <img src="https://images.unsplash.com/photo-1588776814546-ec8f3c5b589e?auto=format&fit=crop&w=1500&q=80" alt="Happy physical therapy client" class="hero-img">
   </header>
 
-  <section class="services">
+  <nav>
+    <a href="#services">Services</a>
+    <a href="#testimonials">Testimonials</a>
+    <a href="#booking">Booking</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <section id="services" class="services">
     <h2>Our Services</h2>
+    <img src="https://images.unsplash.com/photo-1628890920695-83a7b47a6d7a?auto=format&fit=crop&w=1000&q=80" alt="Therapist helping patient" class="section-img">
     <ul>
-      <li>Virtual PT Evaluations</li>
-      <li>In-Home Physical Therapy Sessions</li>
-      <li>Post-Op Rehabilitation</li>
-      <li>Chronic Pain Management</li>
-      <li>Mobility & Strength Training</li>
+      <li>Virtual Physical Therapy Evaluations</li>
+      <li>In-Home One-on-One Sessions</li>
+      <li>Post-Surgery Rehabilitation</li>
+      <li>Pain & Mobility Assessments</li>
+      <li>Balance, Strength & Gait Training</li>
     </ul>
   </section>
 
-  <section class="testimonials">
-    <h2>What Our Clients Say</h2>
-    <p>"The best part was getting expert care from home. My knee pain improved in just a few sessions!" — Maria G.</p>
-    <p>"Very professional, kind, and effective. Highly recommend." — Jason R.</p>
+  <section id="testimonials" class="testimonials">
+    <h2>Client Testimonials</h2>
+    <img src="https://images.unsplash.com/photo-1614630982166-ec176e4c3c08?auto=format&fit=crop&w=1000&q=80" alt="Smiling patient" class="section-img">
+    <blockquote>“I received better care at home than I ever did at a clinic. Truly transformative!” — Ana M.</blockquote>
+    <blockquote>“Professional, punctual, and incredibly effective. Highly recommend Vida Sin Dolor!” — Luis T.</blockquote>
   </section>
 
-  <section class="booking">
+  <section id="booking" class="booking">
     <h2>Book a Session</h2>
-    <p>Ready to start your healing journey? Schedule a virtual or in-home session today.</p>
+    <p>Schedule a virtual or in-home consultation today and take the first step toward a pain-free life.</p>
     <a class="button" href="https://calendly.com/vidasindolor07" target="_blank">Book Now</a>
   </section>
 
-  <section class="contact">
+  <section id="contact" class="contact">
     <h2>Contact Us</h2>
     <p>Email: <a href="mailto:vidasindolor07@gmail.com">vidasindolor07@gmail.com</a></p>
     <p>Instagram: <a href="https://instagram.com/vidasindolor07" target="_blank">@vidasindolor07</a></p>
   </section>
 
   <footer>
-    &copy; 2025 Vida Sin Dolor. All rights reserved.
+    &copy; 2025 Vida Sin Dolor. Designed with care.
   </footer>
 </body>
 </html>

@@ -1,170 +1,349 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vida Sin Dolor | Physical Therapy</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Branflake — Embedded Software & Hardware Integrations</title>
+  <meta name="description" content="Branflake builds elegant embedded software and hardware integrations with an Apple/IKEA-like minimalist design ethos." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%23000'/%3E%3Ctext x='50' y='58' font-size='44' text-anchor='middle' fill='%23fff' font-family='system-ui, -apple-system, Segoe UI, Roboto, sans-serif'%3EB%3C/text%3E%3C/svg%3E" />
   <style>
     :root {
-      --primary-color: #00add8;
-      --accent-color: #00718d;
-      --bg-color: #f0fdf4;
-      --text-color: #333;
+      --bg: #ffffff;
+      --fg: #0a0a0a;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --accent: #0a84ff; /* subtle, Apple-ish blue */
+      --card: #f8fafc;
     }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Inter', sans-serif;
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0b0c0e;
+        --fg: #f3f4f6;
+        --muted: #9aa0a6;
+        --line: #1f2937;
+        --accent: #66a7ff;
+        --card: #111216;
+      }
     }
-
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
     body {
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      line-height: 1.6;
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      letter-spacing: 0.01em;
     }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
+    /* Header */
     header {
-      background: var(--primary-color);
-      color: white;
-      padding: 3rem 1rem;
-      text-align: center;
-      border-bottom: 5px solid var(--accent-color);
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: saturate(180%) blur(12px);
+      background: color-mix(in srgb, var(--bg) 80%, transparent);
+      border-bottom: 1px solid var(--line);
     }
-
-    header h1 {
-      font-size: 3rem;
-      margin-bottom: 0.5rem;
+    .nav { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; }
+    .logo {
+      width: 32px; height: 32px; border-radius: 9px; background: var(--fg);
+      color: var(--bg); display: grid; place-items: center; font-size: 18px;
+      transition: transform .2s ease;
     }
+    .brand:hover .logo { transform: translateY(-1px); }
+    nav ul { display: flex; gap: 22px; list-style: none; padding: 0; margin: 0; }
+    .nav a { opacity: .9; }
+    .nav a:hover { opacity: 1; }
+    .cta { border: 1px solid var(--fg); padding: 10px 14px; border-radius: 999px; transition: .2s ease; }
+    .cta:hover { transform: translateY(-1px); box-shadow: 0 8px 20px color-mix(in srgb, var(--fg) 10%, transparent); }
 
-    header p {
-      font-size: 1.25rem;
+    /* Hero */
+    .hero { padding: 80px 0 40px; border-bottom: 1px solid var(--line); }
+    .kicker { color: var(--muted); text-transform: uppercase; font-size: 12px; letter-spacing: .2em; }
+    .headline { font-size: clamp(32px, 6vw, 64px); line-height: 1.05; margin: 16px 0; font-weight: 700; }
+    .sub { font-size: clamp(16px, 2.5vw, 20px); color: var(--muted); max-width: 52ch; }
+    .hero-actions { display: flex; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; border-radius: 12px;
+      border: 1px solid var(--line); background: var(--bg); transition: .2s ease; font-weight: 600;
     }
+    .btn.primary { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 10px 24px color-mix(in srgb, var(--fg) 8%, transparent); }
 
-    nav {
-      background: white;
-      padding: 1rem;
-      text-align: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    /* Trust bar */
+    .trust { padding: 28px 0; color: var(--muted); font-size: 14px; }
+    .trust-logos { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 16px; opacity: .7; }
+    .trust-logos div { border: 1px dashed var(--line); border-radius: 12px; padding: 12px; text-align: center; }
+
+    /* Cards */
+    .section { padding: 72px 0; border-bottom: 1px solid var(--line); }
+    .section h2 { font-size: clamp(24px, 4vw, 36px); margin: 0 0 12px; }
+    .section p.lead { color: var(--muted); max-width: 60ch; }
+    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; margin-top: 32px; }
+    .card {
+      grid-column: span 4;
+      background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 20px;
+      transition: .2s ease; min-height: 180px;
     }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 16px 36px color-mix(in srgb, var(--fg) 10%, transparent); }
+    .icon { width: 28px; height: 28px; margin-bottom: 12px; }
+    .card h3 { margin: 8px 0 6px; font-size: 18px; }
+    .card p { color: var(--muted); font-size: 14px; }
 
-    nav a {
-      margin: 0 1rem;
-      color: var(--primary-color);
-      text-decoration: none;
-      font-weight: 600;
+    /* Split */
+    .split { display: grid; grid-template-columns: 1.2fr 1fr; gap: 28px; align-items: center; }
+    .panel { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 20px; }
+
+    /* List */
+    .list { display: grid; gap: 10px; margin: 16px 0 0; }
+    .list-item { display: flex; align-items: flex-start; gap: 10px; }
+    .list-item svg { flex: 0 0 18px; margin-top: 3px; }
+
+    /* Tech stack chips */
+    .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .chip { padding: 8px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); font-size: 12px; }
+
+    /* Contact */
+    form { display: grid; gap: 12px; }
+    input, textarea { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); font: inherit; }
+    textarea { min-height: 120px; resize: vertical; }
+    .note { color: var(--muted); font-size: 12px; }
+
+    /* Footer */
+    footer { padding: 40px 0; color: var(--muted); font-size: 14px; }
+
+    /* Responsive */
+    @media (max-width: 980px) {
+      .trust-logos { grid-template-columns: repeat(3, minmax(0,1fr)); }
+      .split { grid-template-columns: 1fr; }
+      .card { grid-column: span 6; }
     }
-
-    section {
-      padding: 4rem 2rem;
-      max-width: 1000px;
-      margin: auto;
-    }
-
-    h2 {
-      color: var(--primary-color);
-      margin-bottom: 1rem;
-      font-size: 2rem;
-    }
-
-    .services ul, .testimonials blockquote {
-      margin-left: 1.5rem;
-    }
-
-    .button {
-      display: inline-block;
-      background: var(--primary-color);
-      color: white;
-      padding: 0.75rem 1.5rem;
-      border-radius: 30px;
-      text-decoration: none;
-      font-weight: bold;
-      transition: background 0.3s ease;
-    }
-
-    .button:hover {
-      background: #00add8;
-    }
-
-    .testimonials blockquote {
-      font-style: italic;
-      background: #fff;
-      padding: 1rem;
-      border-left: 5px solid var(--accent-color);
-      margin-bottom: 1rem;
-    }
-
-    .contact a {
-      color: var(--primary-color);
-      text-decoration: none;
-    }
-
-    footer {
-      background: #e8f5e9;
-      text-align: center;
-      padding: 1.5rem;
-      font-size: 0.9rem;
-    }
-
-    .hero-img, .section-img {
-      width: 100%;
-      max-height: 400px;
-      object-fit: cover;
-      margin: 2rem 0;
-      border-radius: 10px;
+    @media (max-width: 640px) {
+      nav ul { display: none; }
+      .trust-logos { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .card { grid-column: span 12; }
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Vida Sin Dolor</h1>
-    <p>Modern, Compassionate Physical Therapy in Your Home or Online</p>
-    <img src="https://images.unsplash.com/photo-1588776814546-ec8f3c5b589e?auto=format&fit=crop&w=1500&q=80" alt="Happy physical therapy client" class="hero-img">
+    <div class="container nav" role="navigation" aria-label="Primary">
+      <a href="#top" class="brand" aria-label="Branflake Home">
+        <span class="logo" aria-hidden="true">B</span>
+        <span>Branflake</span>
+      </a>
+      <nav>
+        <ul>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#industries">Industries</a></li>
+          <li><a href="#work">Work</a></li>
+          <li><a href="#contact" class="cta">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
   </header>
 
-  <nav>
-    <a href="#services">Services</a>
-    <a href="#testimonials">Testimonials</a>
-    <a href="#booking">Booking</a>
-    <a href="#contact">Contact</a>
-    <a href="book/index.html">My BOOOOOOK!</a>
-  </nav>
+  <main id="top">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container">
+        <div class="kicker">Embedded • Integrations • Reliability</div>
+        <h1 class="headline">Embedded software with furniture‑grade finish.</h1>
+        <p class="sub">Branflake designs and ships robust firmware, device drivers, and hardware integrations for products that demand elegance and reliability—think Apple or IKEA, but for embedded systems.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#contact">
+            <span>Start a project</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a class="btn" href="#work">See our work</a>
+        </div>
+      </div>
+    </section>
 
-  <section id="services" class="services">
-    <h2>Our Services</h2>
-    <img src="https://images.unsplash.com/photo-1628890920695-83a7b47a6d7a?auto=format&fit=crop&w=1000&q=80" alt="Therapist helping patient" class="section-img">
-    <ul>
-      <li>Virtual Physical Therapy Evaluations</li>
-      <li>In-Home One-on-One Sessions</li>
-      <li>Post-Surgery Rehabilitation</li>
-      <li>Pain & Mobility Assessments</li>
-      <li>Balance, Strength & Gait Training</li>
-    </ul>
-  </section>
+    <!-- Trust bar (placeholder logos) -->
+    <section class="trust">
+      <div class="container">
+        <div class="trust-logos" aria-label="Trusted by">
+          <div>Consumer IoT</div>
+          <div>MedTech</div>
+          <div>Robotics</div>
+          <div>Automotive</div>
+          <div>Industrial</div>
+        </div>
+      </div>
+    </section>
 
-  <section id="testimonials" class="testimonials">
-    <h2>Client Testimonials</h2>
-    <img src="https://images.unsplash.com/photo-1614630982166-ec176e4c3c08?auto=format&fit=crop&w=1000&q=80" alt="Smiling patient" class="section-img">
-    <blockquote>“I received better care at home than I ever did at a clinic. Truly transformative!” — Ana M.</blockquote>
-    <blockquote>“Professional, punctual, and incredibly effective. Highly recommend Vida Sin Dolor!” — Luis T.</blockquote>
-  </section>
+    <!-- Services -->
+    <section id="services" class="section container">
+      <h2>What we do</h2>
+      <p class="lead">End‑to‑end embedded development with a minimalist ethos—from board bring‑up to production rollouts.</p>
+      <div class="grid">
+        <article class="card" aria-labelledby="svc1">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16v10H4z" stroke="currentColor" stroke-width="1.4"/><path d="M8 7V4h8v3" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="12" r="2" fill="currentColor"/></svg>
+          <h3 id="svc1">Firmware & RTOS</h3>
+          <p>Bare‑metal C/C++, FreeRTOS, Zephyr, and Linux kernel modules. Deterministic performance where it matters.</p>
+        </article>
+        <article class="card" aria-labelledby="svc2">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h16" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="12" r="3" stroke="currentColor" stroke-width="1.4"/><circle cx="16" cy="12" r="3" stroke="currentColor" stroke-width="1.4"/></svg>
+          <h3 id="svc2">Hardware Integrations</h3>
+          <p>Sensor suites, motor control, RF modules, and custom peripherals over SPI, I²C, UART, CAN, and USB.</p>
+        </article>
+        <article class="card" aria-labelledby="svc3">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 19h12M8 5h8v8H8z" stroke="currentColor" stroke-width="1.4"/></svg>
+          <h3 id="svc3">Edge Linux</h3>
+          <p>Yocto & PetaLinux builds, drivers, systemd services, secure updates, and boot optimization.</p>
+        </article>
+        <article class="card" aria-labelledby="svc4">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16v12H4z" stroke="currentColor" stroke-width="1.4"/><path d="M4 10h16" stroke="currentColor" stroke-width="1.4"/></svg>
+          <h3 id="svc4">Connectivity</h3>
+          <p>Wi‑Fi, BLE, Thread, LoRa, and cellular integrations; OTA pipelines; secure provisioning.</p>
+        </article>
+        <article class="card" aria-labelledby="svc5">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v18M3 12h18" stroke="currentColor" stroke-width="1.4"/></svg>
+          <h3 id="svc5">Testing & CI</h3>
+          <p>HIL rigs, reproducible builds, deterministic tests, and factory programming workflows.</p>
+        </article>
+        <article class="card" aria-labelledby="svc6">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          <h3 id="svc6">From Prototype to Production</h3>
+          <p>Rapid bring‑up, EVT/DVT/PVT support, BOM guidance, and production‑grade firmware hardening.</p>
+        </article>
+      </div>
+    </section>
 
-  <section id="booking" class="booking">
-    <h2>Book a Session</h2>
-    <p>Schedule a virtual or in-home consultation today and take the first step toward a pain-free life.</p>
-    <a class="button" href="https://calendly.com/vidasindolor07" target="_blank">Book Now</a>
-  </section>
+    <!-- Industries / Use cases -->
+    <section id="industries" class="section">
+      <div class="container split">
+        <div>
+          <h2>Where Branflake excels</h2>
+          <p class="lead">We ship quiet reliability in noisy environments.</p>
+          <div class="list">
+            <div class="list-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              <div>
+                <strong>Robotics & Automation</strong>
+                <div class="note">Motor control, real‑time comms, safety interlocks.</div>
+              </div>
+            </div>
+            <div class="list-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              <div>
+                <strong>Connected Consumer</strong>
+                <div class="note">Low‑power devices, OTA, delightful UX through hardware.</div>
+              </div>
+            </div>
+            <div class="list-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              <div>
+                <strong>Medical & Wellness</strong>
+                <div class="note">Traceability, secure updates, deterministic performance.</div>
+              </div>
+            </div>
+            <div class="list-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              <div>
+                <strong>Automotive & Mobility</strong>
+                <div class="note">CAN, LIN, diagnostics, ruggedized systems.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <aside class="panel">
+          <h3>Our stack</h3>
+          <div class="chips" aria-label="Tech stack">
+            <span class="chip">C / C++</span>
+            <span class="chip">FreeRTOS</span>
+            <span class="chip">Zephyr</span>
+            <span class="chip">Linux / Yocto</span>
+            <span class="chip">PetaLinux</span>
+            <span class="chip">Device Drivers</span>
+            <span class="chip">SPI • I²C • UART</span>
+            <span class="chip">USB • CAN</span>
+            <span class="chip">BLE • Wi‑Fi</span>
+            <span class="chip">LoRa</span>
+            <span class="chip">OTA / Security</span>
+          </div>
+          <p class="note" style="margin-top:12px">We meet you where your hardware is, then simplify.</p>
+        </aside>
+      </div>
+    </section>
 
-  <section id="contact" class="contact">
-    <h2>Contact Us</h2>
-    <p>Email: <a href="mailto:vidasindolor07@gmail.com">vidasindolor07@gmail.com</a></p>
-    <p>Instagram: <a href="https://instagram.com/vidasindolor07" target="_blank">@vidasindolor07</a></p>
-  </section>
+    <!-- Work / Case studies (placeholders) -->
+    <section id="work" class="section container">
+      <h2>Recent work</h2>
+      <p class="lead">A few representative engagements. Details available under NDA.</p>
+      <div class="grid">
+        <article class="card" aria-labelledby="w1">
+          <h3 id="w1">IoT Air Purifier</h3>
+          <p>Designed a Zephyr‑based controller with BLE/Wi‑Fi, silent fan curves, and secure OTA. Reduced BOM by 7%.</p>
+        </article>
+        <article class="card" aria-labelledby="w2">
+          <h3 id="w2">Robotic Gripper</h3>
+          <p>Hard‑real‑time motor control on STM32, safety watchdogs, and deterministic command timing over CAN‑FD.</p>
+        </article>
+        <article class="card" aria-labelledby="w3">
+          <h3 id="w3">Wearable Wellness</h3>
+          <p>Ultra‑low‑power firmware with accurate sensing and encrypted sync via a custom USB protocol.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="section">
+      <div class="container split">
+        <div>
+          <h2>Tell us about your device</h2>
+          <p class="lead">We’ll respond within one business day with next steps and a suggested start plan.</p>
+          <form onsubmit="event.preventDefault(); alert('Thanks! We\'ll be in touch.');">
+            <label>
+              <span class="note">Your name</span>
+              <input required placeholder="Ada Lovelace" />
+            </label>
+            <label>
+              <span class="note">Work email</span>
+              <input type="email" required placeholder="you@company.com" />
+            </label>
+            <label>
+              <span class="note">Project summary</span>
+              <textarea placeholder="What are you building? What hardware? Timeline?" ></textarea>
+            </label>
+            <button class="btn primary" type="submit">Send inquiry</button>
+            <div class="note">Prefer email? <a href="mailto:hello@branflake.dev" style="color:var(--accent)">hello@branflake.dev</a></div>
+          </form>
+        </div>
+        <aside class="panel" aria-label="Studio details">
+          <h3>Studio</h3>
+          <p>Branflake, Inc.<br/>Embedded Software & Hardware Integrations</p>
+          <p class="note">We engage globally; on‑site available for bring‑up and manufacturing.</p>
+          <hr style="border:none; border-top:1px solid var(--line); margin:16px 0;"/>
+          <h3>Why Branflake?</h3>
+          <div class="list">
+            <div class="list-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Design‑first embedded craft</div>
+            <div class="list-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Production‑ready discipline</div>
+            <div class="list-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Clear communication</div>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
 
   <footer>
-    &copy; 2025 Vida Sin Dolor. Designed with care.
+    <div class="container" style="display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap;">
+      <div>© <span id="year"></span> Branflake. All rights reserved.</div>
+      <div style="display:flex; gap:16px;">
+        <a href="#services">Services</a>
+        <a href="#industries">Industries</a>
+        <a href="#work">Work</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
   </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
